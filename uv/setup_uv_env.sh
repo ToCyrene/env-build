@@ -17,25 +17,25 @@ vc() {
     local env_name="$1"
     local py_version="${2:-3.12}"
     local current_dir=$(pwd)
-    mkdir -p "$HOME/.env"
-    cd "$HOME/.env" && uv venv "$env_name" --python "$py_version"
+    mkdir -p "$HOME/.uv_env"
+    cd "$HOME/.uv_env" && uv venv "$env_name" --python "$py_version"
     cd "$current_dir"
 }
 
 vl() {
-    if [ -d "$HOME/.env" ]; then
-        ls -1 "$HOME/.env"
+    if [ -d "$HOME/.uv_env" ]; then
+        ls -1 "$HOME/.uv_env"
     else
-        echo "Error: ~/.env directory does not exist"
+        echo "Error: ~/.uv_env directory does not exist"
     fi
 }
 
 va() {
     local env_name="${1:-Torch}"
-    if [ -f "$HOME/.env/$env_name/bin/activate" ]; then
-        source "$HOME/.env/$env_name/bin/activate"
+    if [ -f "$HOME/.uv_env/$env_name/bin/activate" ]; then
+        source "$HOME/.uv_env/$env_name/bin/activate"
     else
-        echo "Error: Environment ~/.env/$env_name not found"
+        echo "Error: Environment ~/.uv_env/$env_name not found"
     fi
 }
 
