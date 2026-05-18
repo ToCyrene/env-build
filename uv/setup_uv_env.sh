@@ -68,3 +68,5 @@ if [ -f "$TARGET_FILE" ]; then
 fi
 EOF
 fi
+
+source $BASHRC

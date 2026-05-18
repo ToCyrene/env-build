@@ -10,3 +10,5 @@ if [ -f "$BASHRC" ]; then
     sed -i "/if \[ -f \"${TARGET_FILE//\//\\/}\" \]; then/,/fi/d" "$BASHRC"
     sed -i '${/^[[:space:]]*$/d}' "$BASHRC"
 fi
+
+source $BASHRC
