@@ -3,14 +3,27 @@
 TARGET_DIR="$HOME/.uv_env"
 TARGET_FILE="$TARGET_DIR/.command"
 BASHRC="$HOME/.bashrc"
+UV_CONFIG_DIR="$HOME/.config/uv"
+UV_CONFIG_FILE="$UV_CONFIG_DIR/uv.toml"
 
+# 安装 uv（如果未安装）
 if ! command -v uv &> /dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
     source "$HOME/.local/bin/env" 2>/dev/null || export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# 配置 uv 使用阿里云镜像源
+mkdir -p "$UV_CONFIG_DIR"
+cat << 'TOML_EOF' > "$UV_CONFIG_FILE"
+[[index]]
+url = "http://mirrors.aliyun.com/pypi/simple/"
+default = true
+TOML_EOF
+
+# 创建目标目录
 mkdir -p "$TARGET_DIR"
 
+# 写入函数定义
 cat << 'INNER_EOF' > "$TARGET_FILE"
 vc() {
     [ -z "$1" ] && { echo "Error: Please provide an environment name."; return 1; }
@@ -58,6 +71,7 @@ pip3() {
 }
 INNER_EOF
 
+# 检查并添加到 .bashrc
 CHECK_STR="source \"$TARGET_FILE\""
 
 if ! grep -q "$CHECK_STR" "$BASHRC"; then
@@ -69,4 +83,5 @@ fi
 EOF
 fi
 
+# 重新加载 .bashrc
 source $BASHRC
