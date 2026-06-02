@@ -1,6 +1,6 @@
 # env-build
 
-安装 [uv](https://docs.astral.sh/uv/) 并仿照 conda 的方式管理 Python 虚拟环境。
+安装 [uv](https://docs.astral.sh/uv/) 并仿照 conda 的方式管理 Python 虚拟环境。原生 `uv` 的环境散落在项目目录各处，本脚本将所有环境统一创建到 `~/.uv_env/` 下，便于集中查看和管理。
 
 ## 快速开始
 
