@@ -54,6 +54,39 @@ va() {
 
 alias vd="deactivate"
 
+vr() {
+    if [ -z "$1" ]; then
+        echo "Error: Please provide an environment name."
+        return 1
+    fi
+    
+    local env_name="$1"
+    local env_path="$HOME/.uv_env/$env_name"
+    
+    if [ ! -d "$env_path" ]; then
+        echo "Error: Environment '$env_name' does not exist"
+        echo "Use 'vl' to list available environments"
+        return 1
+    fi
+    
+    # 检查是否正在使用要删除的环境
+    if [ -n "$VIRTUAL_ENV" ] && [ "$VIRTUAL_ENV" = "$env_path" ]; then
+        echo "Error: Environment '$env_name' is currently active. Run 'deactivate' first."
+        return 1
+    fi
+    
+    echo "Removing environment: $env_name"
+    echo "Path: $env_path"
+    read -p "Are you sure you want to delete this environment? (y/N): " confirmation
+    
+    if [ "$confirmation" = "y" ] || [ "$confirmation" = "Y" ]; then
+        rm -rf "$env_path"
+        echo "Environment '$env_name' removed successfully"
+    else
+        echo "Deletion cancelled"
+    fi
+}
+
 unalias pip 2>/dev/null
 unalias pip3 2>/dev/null
 
