@@ -76,7 +76,9 @@ function vc {
 
 function vl {
     if (Test-Path "$env:USERPROFILE\.uv_env") {
-        Get-ChildItem -Path "$env:USERPROFILE\.uv_env" -Directory | Select-Object -ExpandProperty Name
+        $path = "$env:USERPROFILE\.uv_env"
+        Write-Host "Listing environments in: $path" -ForegroundColor Cyan
+        Get-ChildItem -Path $path -Directory | Select-Object -ExpandProperty Name
     } else {
         Write-Host "Error: ~/.uv_env directory does not exist" -ForegroundColor Red
     }
