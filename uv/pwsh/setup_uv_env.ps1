@@ -103,6 +103,46 @@ function vd {
     }
 }
 
+function vr {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$env_name
+    )
+    
+    $env_path = "$env:USERPROFILE\.uv_env\$env_name"
+    
+    if (Test-Path $env_path) {
+        # 检查是否正在使用要删除的环境
+        if ($env:VIRTUAL_ENV -and $env:VIRTUAL_ENV -eq $env_path) {
+            Write-Host "Warning: Environment '$env_name' is currently active!" -ForegroundColor Yellow
+            Write-Host "Please deactivate it first using 'vd' command." -ForegroundColor Yellow
+            return
+        }
+        
+        Write-Host "Removing environment: $env_name" -ForegroundColor Yellow
+        Write-Host "Path: $env_path" -ForegroundColor Gray
+        
+        # 确认删除
+        $confirmation = Read-Host "Are you sure you want to delete this environment? (y/N)"
+        if ($confirmation -eq 'y' -or $confirmation -eq 'Y') {
+            try {
+                Remove-Item -Path $env_path -Recurse -Force
+                Write-Host "Environment '$env_name' removed successfully" -ForegroundColor Green
+            }
+            catch {
+                Write-Host "Error: Failed to remove environment - $_" -ForegroundColor Red
+            }
+        }
+        else {
+            Write-Host "Deletion cancelled" -ForegroundColor Cyan
+        }
+    }
+    else {
+        Write-Host "Error: Environment '$env_name' does not exist at: $env_path" -ForegroundColor Red
+        Write-Host "Use 'vl' command to see available environments" -ForegroundColor Yellow
+    }
+}
+
 function pip {
     param(
         [Parameter(Position=0)]
