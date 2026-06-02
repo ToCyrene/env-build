@@ -122,7 +122,6 @@ function pip3 {
     pip @args
 }
 
-Set-Alias -Name vd -Value vd -Force
 '@ | Out-File -FilePath $TARGET_FILE -Encoding utf8
 
 Write-Host "Function file created at: $TARGET_FILE" -ForegroundColor Green
